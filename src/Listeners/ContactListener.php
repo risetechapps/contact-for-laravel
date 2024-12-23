@@ -22,15 +22,18 @@ class ContactListener
                 return;
             }
 
-            if ($created) {
-                $event->model->contacts()->delete();
-            }
+            if(count($contacts) > 0){
 
-            foreach ($contacts as $contact) {
+                if ($created) {
+                    $event->model->contacts()->delete();
+                }
 
-                $contact['contact_type'] = get_class($event->model);
-                $contact['contact_id'] = $event->model->getKey();
-                Contact::create($contact);
+                foreach ($contacts as $contact) {
+
+                    $contact['contact_type'] = get_class($event->model);
+                    $contact['contact_id'] = $event->model->getKey();
+                    Contact::create($contact);
+                }
             }
 
         } catch (\Exception $exception) {
