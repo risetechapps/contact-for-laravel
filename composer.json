@@ -1,5 +1,5 @@
 {
-    "name": "risetechapps/contact-for-tenancy",
+    "name": "risetechapps/contact-for-laravel",
     "description": "",
     "keywords": [
         "risetechapps",
@@ -7,7 +7,7 @@
         "tenancy",
         "laravel"
     ],
-    "homepage": "https://github.com/risetechapps/contact-for-tenancy",
+    "homepage": "https://github.com/risetechapps/contact-for-laravel",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -20,8 +20,8 @@
     "require": {
         "php": "^8.1",
         "illuminate/support": "^9.0|^10.0",
-        "risetechapps/uuid-for-laravel": "^1.0",
-        "risetechapps/to-upper-for-laravel": "^1.0",
+        "risetechapps/has-uuid-for-laravel": "^1.0.0",
+        "risetechapps/to-upper-for-laravel": "^1.0.0",
         "risetechapps/monitoring-for-laravel": "^1.0"
     },
     "require-dev": {
@@ -58,5 +58,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "version": "1.0"
+    "version": "1.0.0"
 }
