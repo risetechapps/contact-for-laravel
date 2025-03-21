@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Tpetry\PostgresqlEnhanced\Schema\Blueprint;
+use Tpetry\PostgresqlEnhanced\Support\Facades\Schema;
 
 return new class extends Migration {
     /**
@@ -10,6 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        Schema::createExtensionIfNotExists('citext');
+
         Schema::create('contacts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuidMorphs('contact');
@@ -21,6 +23,10 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
 
+            $table->index('department');
+            $table->index('email');
+            $table->index('telephone');
+            $table->index('cellphone');
         });
     }
 
@@ -29,6 +35,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('branch_module');
+        Schema::dropIfExists('contacts');
     }
 };
