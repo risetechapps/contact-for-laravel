@@ -16,7 +16,16 @@ class ContactListener
         try {
 
             $created = !is_null($event->model->contacts);
-            $contacts = $event->request->input('contacts', []);
+
+            if ($event->request->has('contacts')) {
+                $contacts = $event->request->input('contacts');
+            }else if ($event->request->has('person.contacts')) {
+                $contacts = $event->request->input('person.contacts');
+            }else{
+                if(!empty(\RiseTechApps\Contact\Contact::getContact())){
+                    $contacts = \RiseTechApps\Contact\Contact::getContact();
+                }
+            }
 
             if(!is_null($event->model->getOriginal('deleted_at'))){
                 return;
