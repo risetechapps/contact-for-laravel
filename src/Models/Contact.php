@@ -4,6 +4,7 @@ namespace RiseTechApps\Contact\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use RiseTechApps\HasUuid\Traits\HasUuid\HasUuid;
@@ -13,6 +14,7 @@ use RiseTechApps\ToUpper\Traits\HasToUpper;
 class Contact extends Model
 {
     use HasFactory, Notifiable, HasUuid, SoftDeletes, HasToUpper, HasLoggly;
+    use Prunable;
 
     /**
      * The attributes that are mass assignable.
@@ -46,4 +48,9 @@ class Contact extends Model
      */
     protected $casts = [
     ];
+
+    public function prunable(): Builder|Contact
+    {
+        return static::onlyTrashed()->where('deleted_at', '<=', now()->subDays(30));
+    }
 }
