@@ -49,8 +49,8 @@ class Contact extends Model
     protected $casts = [
     ];
 
-    public function prunable(): Builder|Contact
+    public function prunable(): Contact|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
     {
-        return static::onlyTrashed()->where('deleted_at', '<=', now()->subDays(30));
+        return static::onlyTrashed()->where('deleted_at', '<=', now()->subDays(1));
     }
 }
