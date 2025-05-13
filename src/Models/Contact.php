@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use RiseTechApps\HasUuid\Traits\HasUuid\HasUuid;
 use RiseTechApps\Monitoring\Traits\HasLoggly\HasLoggly;
 use RiseTechApps\ToUpper\Traits\HasToUpper;
+use Illuminate\Database\Eloquent\Builder;
 
 class Contact extends Model
 {
@@ -49,7 +50,7 @@ class Contact extends Model
     protected $casts = [
     ];
 
-    public function prunable(): Contact|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder
+    public function prunable(): Contact|Builder
     {
         return static::onlyTrashed()->where('deleted_at', '<=', now()->subDays(1));
     }
