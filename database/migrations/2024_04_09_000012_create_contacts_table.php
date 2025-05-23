@@ -10,9 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::createExtensionIfNotExists('citext');
+        if(DB::getDriverName() == 'pgsql'){
+            Schema::createExtensionIfNotExists('citext');
+        }
 
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('contacts', function ($table) {
             $table->uuid('id')->primary();
             $table->uuidMorphs('contact');
             $table->string('name')->nullable();
