@@ -48,7 +48,7 @@ class ContactListener
         } catch (\Exception $exception) {
             logglyError()->exception($exception)
                 ->withRequest($event->request)
-                ->performedOn(static::class)
+                ->performedOn($event->model)
                 ->log("Error registering contact");
         }
     }
