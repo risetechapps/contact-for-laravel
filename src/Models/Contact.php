@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use RiseTechApps\HasUuid\Traits\HasUuid\HasUuid;
+use RiseTechApps\HasUuid\Traits\HasUuid;
 use RiseTechApps\Monitoring\Traits\HasLoggly\HasLoggly;
 use RiseTechApps\ToUpper\Traits\HasToUpper;
 use Illuminate\Database\Eloquent\Builder;
