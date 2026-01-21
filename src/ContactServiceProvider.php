@@ -20,8 +20,6 @@ class ContactServiceProvider extends ServiceProvider
         Event::listen(
             ContactEvent::class, ContactListener::class
         );
-
-        $this->registerMacros();
     }
 
     /**
@@ -33,42 +31,5 @@ class ContactServiceProvider extends ServiceProvider
         $this->app->singleton(Contact::class, function () {
             return new Contact();
         });
-    }
-
-    protected function registerMacros(): void
-    {
-
-        if(!ResponseFactory::hasMacro('jsonSuccess')){
-            ResponseFactory::macro('jsonSuccess', function ($data = []) {
-                $response = ['success' => true];
-                if (!empty($data)) $response['data'] = $data;
-                return response()->json($response);
-            });
-        }
-
-        if(!ResponseFactory::hasMacro('jsonError')){
-            ResponseFactory::macro('jsonError', function ($data = null) {
-                $response = ['success' => false];
-                if (!is_null($data)) $response['message'] = $data;
-                return response()->json($response, 412);
-            });
-        }
-
-        if(!ResponseFactory::hasMacro('jsonGone')) {
-            ResponseFactory::macro('jsonGone', function ($data = null) {
-                $response = ['success' => false];
-                if (!is_null($data)) $response['message'] = $data;
-                return response()->json($response, 410);
-            });
-        }
-
-        if(!ResponseFactory::hasMacro('jsonNotValidated')) {
-            ResponseFactory::macro('jsonNotValidated', function ($message = null, $error = null) {
-                $response = ['success' => false];
-                if (!is_null($message)) $response['message'] = $message;
-
-                return response()->json($response, 422);
-            });
-        }
     }
 }
