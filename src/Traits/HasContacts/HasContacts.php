@@ -4,6 +4,7 @@ namespace RiseTechApps\Contact\Traits\HasContacts;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use RiseTechApps\Contact\Events\ContactEvent;
 use RiseTechApps\Contact\Models\Contact;
 
@@ -19,8 +20,8 @@ trait HasContacts
         });
     }
 
-    public function contacts(): HasMany
+    public function contacts(): MorphMany
     {
-        return $this->hasMany(Contact::class, 'contact_id', 'id');
+        return $this->morphMany(Contact::class, 'contacts');
     }
 }

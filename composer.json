@@ -22,7 +22,7 @@
         "risetechapps/has-uuid-for-laravel": "^1.0.0",
         "risetechapps/to-upper-for-laravel": "^1.0.0",
         "tpetry/laravel-postgresql-enhanced": "^3.5.0",
-        "risetechapps/monitoring-for-laravel": "^1.0.0",
+        "risetechapps/monitoring-for-laravel": "^2.0.0",
         "risetechapps/orchestrator-link-for-laravel": "^1.0.0"
     },
     "require-dev": {
@@ -65,5 +65,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "version": "1.0.0"
+    "version": "1.0.1"
 }
