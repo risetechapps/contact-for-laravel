@@ -22,6 +22,6 @@ trait HasContacts
 
     public function contacts(): MorphMany
     {
-        return $this->morphMany(Contact::class, 'contacts');
+        return $this->morphMany(Contact::class, 'contact');
     }
 }
