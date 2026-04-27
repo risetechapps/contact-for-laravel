@@ -22,6 +22,36 @@ trait HasContacts
 
     public function contacts(): MorphMany
     {
-        return $this->morphMany(Contact::class, 'contact');
+        return $this->morphMany(Contact::class, 'contact')->ordered();
+    }
+
+    public function getPrimaryContact(): ?Contact
+    {
+        return $this->contacts()
+            ->primary()
+            ->first();
+    }
+
+    public function getContactsByType(string $type): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->contacts()
+            ->where('department', $type)
+            ->get();
+    }
+
+    public function hasEmail(string $email): bool
+    {
+        return $this->contacts()
+            ->where('email', $email)
+            ->exists();
+    }
+
+    public function hasContact(string $type, string $value): bool
+    {
+        return $this->contacts()
+            ->where(function ($query) use ($type, $value) {
+                $query->where($type, $value);
+            })
+            ->exists();
     }
 }
