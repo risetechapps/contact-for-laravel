@@ -14,8 +14,10 @@ class ContactResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'telephone' => $this->telephone,
-            'cellphone' => $this->telephone,
+            'cellphone' => $this->cellphone,
             'department' => $this->department,
+            'is_primary' => $this->is_primary,
+            'sort_order' => $this->sort_order,
             'deleted' => !is_null($this->deleted_at),
         ];
     }
