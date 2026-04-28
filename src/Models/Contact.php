@@ -22,6 +22,12 @@ class Contact extends Model
     {
         parent::boot();
 
+        static::saving(function ($contact) {
+            if ($contact->isDirty('is_primary') && $contact->is_primary) {
+                $contact->clearOtherPrimaryContacts();
+            }
+        });
+
         static::created(function ($contact) {
             $contact->ensurePrimaryContact();
         });
@@ -31,6 +37,18 @@ class Contact extends Model
                 $contact->promoteAnotherContact();
             }
         });
+    }
+
+    /**
+     * Clear primary flag from other contacts of the same parent.
+     */
+    protected function clearOtherPrimaryContacts(): void
+    {
+        static::where('contact_type', $this->contact_type)
+            ->where('contact_id', $this->contact_id)
+            ->where('id', '!=', $this->getKey())
+            ->where('is_primary', true)
+            ->update(['is_primary' => false]);
     }
 
     /**
