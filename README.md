@@ -38,6 +38,8 @@ php artisan migrate
 
 ## 📖 Uso
 
+> **Nota:** O trait `HasContacts` pode ser usado em qualquer model, com ou sem `SoftDeletes`.
+
 ### Campos do Contato
 - `name` - Nome do contato
 - `telephone` - Telefone fixo
@@ -80,6 +82,30 @@ $client->contacts()->primary()->first();
 
 // Ordenados
 $client->contacts()->ordered()->get();
+```
+
+### Contato Principal (Automático)
+
+O sistema gerencia automaticamente o contato principal:
+
+- **Ao criar um contato**: Se não existir nenhum contato primário para o model, ele automaticamente será marcado como primário
+- **Ao definir como primário**: Se já existir um contato primário, o anterior perde automaticamente essa marcação
+- **Ao deletar o primário**: Outro contato do mesmo model será promovido a primário automaticamente (respeitando `sort_order` e `created_at`)
+
+```php
+// Criar primeiro contato - automaticamente vira primário
+$client->contacts()->create(['name' => 'João', 'email' => 'joao@exemplo.com']);
+
+// Criar segundo como primário - o primeiro perde a marcação
+$client->contacts()->create([
+    'name' => 'Maria',
+    'email' => 'maria@exemplo.com',
+    'is_primary' => true  // João deixa de ser primário
+]);
+
+// Deletar o primário - outro contato assume automaticamente
+$client->getPrimaryContact()->delete();
+$novoPrimario = $client->fresh()->getPrimaryContact(); // Retorna outro contato
 ```
 
 ### Histórico de Mudanças (Audit Log)
