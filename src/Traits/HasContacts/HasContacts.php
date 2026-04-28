@@ -16,8 +16,10 @@ trait HasContacts
             event(new ContactEvent($model));
         });
 
-        static::restored(function ($model) {
-        });
+        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive(static::class))) {
+            static::restored(function ($model) {
+            });
+        }
     }
 
     public function contacts(): MorphMany

@@ -18,6 +18,57 @@ class Contact extends Model
     use HasFactory, Notifiable, HasUuid, SoftDeletes, HasToUpper, HasLoggly;
     use Prunable, HasAuditing;
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::created(function ($contact) {
+            $contact->ensurePrimaryContact();
+        });
+
+        static::deleting(function ($contact) {
+            if ($contact->is_primary) {
+                $contact->promoteAnotherContact();
+            }
+        });
+    }
+
+    /**
+     * Promote another contact to primary when this one is being deleted.
+     */
+    protected function promoteAnotherContact(): void
+    {
+        $nextContact = static::where('contact_type', $this->contact_type)
+            ->where('contact_id', $this->contact_id)
+            ->where('id', '!=', $this->getKey())
+            ->orderBy('sort_order')
+            ->orderBy('created_at')
+            ->first();
+
+        if ($nextContact) {
+            $nextContact->update(['is_primary' => true]);
+        }
+    }
+
+    /**
+     * Ensure this contact is marked as primary if no primary exists for the parent model.
+     */
+    protected function ensurePrimaryContact(): void
+    {
+        if ($this->is_primary) {
+            return;
+        }
+
+        $hasPrimary = static::where('contact_type', $this->contact_type)
+            ->where('contact_id', $this->contact_id)
+            ->where('is_primary', true)
+            ->exists();
+
+        if (! $hasPrimary) {
+            $this->update(['is_primary' => true]);
+        }
+    }
+
     /**
      * The attributes that are mass assignable.
      *
