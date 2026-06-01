@@ -3,6 +3,15 @@
 Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/) (SemVer).
 
+## [1.2.0] - 2026-06-01
+### Added
+- Novo método público `syncContacts(Request|array $data)` no trait `HasContacts` para sincronização explícita de contatos (útil em jobs e processamento em segundo plano, sem depender do evento `saved`)
+- Novo `ContactPayloadResolver` para resolver o payload a partir de `Request` ou `array`, aceitando lista de contatos, `['contacts' => [...]]`, `person.contacts` ou um contato único
+
+### Changed
+- A lógica de persistência de contatos (update por `id`, criação, remoção dos ausentes e garantia de um único primário) foi movida do `ContactListener` para o método `syncContacts()` do trait `HasContacts`
+- `ContactListener` agora apenas resolve a origem dos dados (request / `person.contacts` / fallback estático) e delega para `$model->syncContacts()`, eliminando duplicação de lógica
+
 ## [1.1.0] - 2026-04-28
 ### Added
 - Dependências atualizadas
