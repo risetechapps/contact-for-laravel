@@ -72,6 +72,40 @@ $hasEmail = $client->hasEmail('joao@exemplo.com');
 $hasPhone = $client->hasContact('telephone', '11999999999');
 ```
 
+### Sincronizando Contatos
+
+O método `syncContacts()` faz a sincronização completa dos contatos de um model em uma única chamada. Ele aceita tanto um `array` quanto um `Illuminate\Http\Request` — ideal tanto em controllers quanto em jobs/processamento em segundo plano.
+
+```php
+// Lista de contatos direta
+$client->syncContacts([
+    ['name' => 'João', 'email' => 'joao@exemplo.com', 'cellphone' => '11999999999'],
+    ['name' => 'Maria', 'email' => 'maria@exemplo.com', 'is_primary' => true],
+]);
+
+// Com a chave 'contacts'
+$client->syncContacts(['contacts' => [...]]);
+
+// A partir do Request (busca em 'contacts' ou 'person.contacts')
+$client->syncContacts($request);
+```
+
+**Comportamento da sincronização (incremental):**
+- Contato com `id` existente → **atualiza** (e restaura, se estiver soft-deleted)
+- Contato sem `id` → **cria** novo
+- Contatos ausentes no payload → **removidos** (soft delete)
+- Garante automaticamente **um único** contato primário
+- O `sort_order` é definido pela ordem dos itens no array
+
+> 💡 Para preservar o histórico e os ids dos contatos existentes, envie o `id` de cada contato no payload. Sem `id`, um novo contato é criado.
+
+**Exemplo em job (segundo plano):**
+```php
+$client->syncContacts($data['contacts'] ?? []);
+```
+
+> ⚠️ Se o seu model usa `HasContacts`, salvar o model (`save()`/`update()`) dispara o `ContactEvent`, que também sincroniza contatos a partir do request. Ao usar `syncContacts()` de forma explícita, evite enviar contatos pelo request/static no mesmo fluxo para não sincronizar duas vezes.
+
 ### Relacionamento
 ```php
 // Todos os contatos ordenados por sort_order
