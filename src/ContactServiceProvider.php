@@ -25,11 +25,10 @@ class ContactServiceProvider extends ServiceProvider
     /**
      * Register the application services.
      */
+    #[\Override]
     public function register(): void
     {
         // Register the main class to use with the facade
-        $this->app->singleton(Contact::class, function () {
-            return new Contact();
-        });
+        $this->app->singleton(Contact::class, fn() => new Contact());
     }
 }

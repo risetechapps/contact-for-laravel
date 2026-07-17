@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ContactResource extends JsonResource
 {
+    #[\Override]
     public function toArray(Request $request): array
     {
         return [

@@ -18,6 +18,7 @@ class Contact extends Model
     use HasFactory, Notifiable, HasUuid, SoftDeletes, HasToUpper, HasLoggly;
     use Prunable, HasAuditing;
 
+    #[\Override]
     protected static function boot(): void
     {
         parent::boot();

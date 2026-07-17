@@ -58,7 +58,7 @@ trait HasContacts
             foreach ($contacts as $contactData) {
                 $sortOrder++;
                 $contactData['sort_order'] = $sortOrder;
-                $contactData['contact_type'] = get_class($this);
+                $contactData['contact_type'] = $this::class;
                 $contactData['contact_id'] = $this->getKey();
 
                 $contactId = $contactData['id'] ?? null;
