@@ -3,7 +3,7 @@
 Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), e este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/) (SemVer).
 
-## [1.2.1] - 2026-07-20
+## [2.0.0] - 2026-07-20
 
 ### Performance
 - **Removidos 6 índices ociosos da tabela `contacts`** (migration `drop_unused_indexes_from_contacts`): `department`, `email`, `telephone`, `cellphone`, `is_primary`, `sort_order` (todos com `idx_scan = 0`). Como o planner do PostgreSQL avalia todos os índices ao planejar cada query, índices sem uso só inflam o tempo de planejamento. Mantidos a PK e o índice de morphs `(contact_type, contact_id)`, que serve as buscas quentes (por model dono). Drop via `CONCURRENTLY` (não trava a tabela); `down()` recria. Mesmo tratamento aplicado ao `address-for-laravel`.
