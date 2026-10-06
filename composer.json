@@ -22,7 +22,7 @@
         "risetechapps/has-uuid-for-laravel": "^1.2.0",
         "risetechapps/to-upper-for-laravel": "^1.2.0",
         "tpetry/laravel-postgresql-enhanced": "^3.7.0",
-        "risetechapps/monitoring-for-laravel": "^4.0.0"
+        "risetechapps/monitoring-for-laravel": "^5.0.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
